@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEED2SHELF</title>
+  <link rel="stylesheet" href="sellers.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+</head>
+<body>
+       <video autoplay muted loop id="bg-video">
+  <source src="bgvids2s.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+  <div id="navbar">
+    <div id="logo-title">
+      <img src="logo.png" alt="SEED2SHELF Logo">
+      <h1 id="title">SEED2SHELF</h1>
+    </div>
+    <div class="nav-links">
+      <a href="dummyhome.html">Home</a>
+      <a href="agency.html">Enlist</a>
+      <a href="farmershop.html">Buy Now</a>
+    </div>
+  </div>
+  
+<div class="container">
+    <h1>🌾Progress Dashboard</h1>
+
+    <!-- Stakeholder Switcher -->
+    <label for="stakeholderSelect"><b>Select Stakeholder:</b></label>
+    <select id="stakeholderSelect" onchange="switchStakeholder()">
+      <option value="" disabled selected>-- Choose Stakeholder --</option>
+      <option value="Seed Company">Seed Company</option>
+      <option value="Farmer">Farmer</option>
+      <option value="Crop Processor">Crop Processor</option>
+      <option value="Retailer">Retailer</option>
+      <option value="Consumer">Consumer</option>
+    </select>
+
+    <h2 id="welcome"></h2>
+
+    <div id="processSection" class="hidden">
+      <h3>Process Update</h3>
+      <select id="process"></select>
+      <input type="text" id="batchNo" placeholder="Enter Batch Number">
+      <input type="text" id="cropName" placeholder="Enter Crop Name">
+      <input type="text" id="details" placeholder="Enter Details">
+      <button onclick="updateProcess()">Update Batch</button>
+    </div>
+
+    <h2>Check Batch Status</h2>
+    <input type="text" id="checkBatchNo" placeholder="Enter Batch Number">
+    <button onclick="checkBatch()">Check</button>
+
+    <canvas id="qr"></canvas>
+    <div id="timeline"></div>
+  </div>
+
+  <script>
+  // Process steps
+  const steps = {
+    "Seed Company":["R&D","Production","Processing","Testing","Storage","Distribution","Support"],
+    "Farmer":["Soil Preparation","Sowing","Manuring","Irrigation","Weed Control","Crop Protection","Growth Monitoring","Harvesting","Post-Harvest Handling"],
+    "Crop Processor":["Procurement","Processing","Packaging","Distribution"],
+    "Distributor":["Collection","Storage","Transportation","Supply to Market/Retailers"],
+    "Retailer":["Procurement","Storage/Display","Selling to Consumers"],
+    "Consumer":[]
+  };
+
+  // Fake blockchain utilities
+  function randomHash(){ return '0x'+Math.random().toString(16).substr(2,64); }
+  function randomFee(){ return (Math.random()*0.01).toFixed(5)+' ETH'; }
+
+  let batchData = {};
+  let stakeholderRole = "";
+  let stakeholderName = "";
+  let stakeholderHash = "";
+
+  // Load verified user data from localStorage on page load
+  window.onload = function() {
+    stakeholderRole = localStorage.getItem('stakeholderRole') || "";
+    stakeholderName = localStorage.getItem('stakeholderName') || "Guest User";
+    stakeholderHash = localStorage.getItem('stakeholderHash') || randomHash().substring(0,10);
+
+    // Show welcome message
+    document.getElementById('welcome').innerText = `Welcome ${stakeholderName} (${stakeholderRole})`;
+
+    // Pre-select stakeholder in dropdown if available
+    if (stakeholderRole) {
+      document.getElementById('stakeholderSelect').value = stakeholderRole;
+      setupProcessOptions(stakeholderRole);
+    }
+  };
+
+  // Setup process options for role
+  function setupProcessOptions(role){
+    const processSelect = document.getElementById('process');
+    processSelect.innerHTML = "";
+    if(steps[role] && steps[role].length>0){
+      steps[role].forEach(s=>{
+        const opt=document.createElement('option');
+        opt.value=s; opt.textContent=s;
+        processSelect.appendChild(opt);
+      });
+      document.getElementById('processSection').classList.remove('hidden');
+    } else {
+      document.getElementById('processSection').classList.add('hidden');
+    }
+    // Clear timeline
+    document.getElementById('timeline').innerHTML = "";
+  }
+
+  // Switch stakeholder from dropdown
+  function switchStakeholder(){
+    stakeholderRole = document.getElementById('stakeholderSelect').value;
+    stakeholderName = localStorage.getItem('stakeholderName') || (stakeholderRole + " User");
+    stakeholderHash = localStorage.getItem('stakeholderHash') || randomHash().substring(0,10);
+
+    document.getElementById('welcome').innerText = `Welcome ${stakeholderName} (${stakeholderRole})`;
+    setupProcessOptions(stakeholderRole);
+  }
+
+  // Update batch
+  function updateProcess(){
+    const batchNo = document.getElementById('batchNo').value.trim();
+    const cropName = document.getElementById('cropName').value.trim();
+    const details = document.getElementById('details').value.trim();
+    const process = document.getElementById('process').value;
+
+    if(!batchNo || !cropName || !details){ alert('Fill all fields'); return; }
+
+    if(!batchData[batchNo]) batchData[batchNo]=[];
+    batchData[batchNo].push({
+      stakeholder: stakeholderRole,
+      stakeholderName,
+      stakeholderHash,
+      process,
+      cropName,
+      details,
+      hash: randomHash(),
+      fee: randomFee(),
+      time: new Date().toLocaleString()
+    });
+
+    alert(`Process updated for ${stakeholderRole}`);
+    checkBatch(batchNo);
+  }
+
+  // Check batch
+  function checkBatch(batchNoParam){
+    const batchNo = batchNoParam || document.getElementById('checkBatchNo').value.trim();
+    const timeline = document.getElementById('timeline');
+    timeline.innerHTML = `<h3>Batch ${batchNo} Timeline</h3>`;
+    const canvas = document.getElementById('qr'); canvas.innerHTML='';
+
+    if(!batchData[batchNo]){ timeline.innerHTML+="<p>No data yet</p>"; return; }
+
+    batchData[batchNo].forEach(entry=>{
+      const div=document.createElement('div'); div.className='step';
+      div.innerHTML=`<b>${entry.stakeholder}</b> → ${entry.process}<br>
+                    👤 ${entry.stakeholderName} (${entry.stakeholderHash})<br>
+                    🌱 ${entry.cropName}<br>
+                    📝 ${entry.details}<br>
+                    <span class='hash'>Hash: ${entry.hash}</span><br>
+                    <span class='fee'>Gas Fee: ${entry.fee}</span><br>
+                    <small>${entry.time}</small>`;
+      timeline.appendChild(div);
+    });
+
+    new QRious({ element:canvas, value:`Batch:${batchNo}`, size:150 });
+  }
+</script>
+
+</body>
+</html>

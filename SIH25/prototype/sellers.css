@@ -1,0 +1,150 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Arapey', serif;
+    color: rgb(226, 200, 151);
+}
+
+body {
+    background-color: #9cbb90;
+}
+
+/* NAVBAR */
+#navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    background-color: #546b4f;
+    color: #e3d9b0;
+    padding: 0 40px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#logo-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#logo-title img {
+    height: 50px;
+}
+
+#title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #e3d9b0;
+}
+
+.nav-links {
+    display: flex;
+    gap: 35px;
+    font-size: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #e3d9b0;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+    color: #fff;
+}
+
+/* MAIN CONTENT BOX */
+.container {
+  max-width: 750px;
+  margin: 40px auto;
+  padding: 30px;
+  background: rgba(255, 255, 255, 0.25); /* transparent matte */
+  backdrop-filter: blur(8px); /* frosted glass effect */
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  color: #293d24;
+  line-height: 1.6;
+}
+
+.container * {
+  color: #293d24;
+}
+
+.container h2, 
+.container h3 {
+  margin-bottom: 12px;
+  color: #546b4f;
+}
+
+.container p {
+  margin-bottom: 16px;
+  font-size: 17px;
+}
+
+/* INPUTS + BUTTONS */
+input[type="text"], textarea, input[type="file"] {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border: 2px solid #9cbb90;
+  border-radius: 10px;
+  font-size: 15px;
+  color: #293d24;
+}
+
+textarea {
+  height: 120px;
+  resize: none;
+}
+
+button {
+  background: #9cbb90;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #546b4f;
+}
+
+/* JOURNAL ENTRIES */
+.journal-entry {
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 6px solid #546b4f;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.journal-entry h3 {
+  margin-top: 0;
+  color: #546b4f;
+}
+
+.journal-entry img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-top: 12px;
+}
+#bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1; 
+  object-fit: cover; 
+}

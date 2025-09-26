@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login • Agrichain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <!-- Background video -->
+  <video autoplay muted loop id="bg-video">
+    <source src="bg.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <main class="auth-wrapper">
+    <section class="card">
+      <h1 class="title">Log in</h1>
+
+      <form id="loginForm" onsubmit="login(event)" novalidate>
+        <label class="field">
+          <span>Email</span>
+          <input id="loginEmail" type="email" placeholder="you@example.com" required />
+        </label>
+
+        <label class="field">
+          <span>Password</span>
+          <div class="pw">
+            <input id="loginPassword" type="password" placeholder="••••••••" minlength="6" required />
+            <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)" aria-label="Show password">👁</button>
+          </div>
+        </label>
+
+        <!-- Role Selector -->
+        <label class="field">
+          <span>Role</span>
+          <select id="loginRole" required>
+            <option value="" disabled selected>-- Select Role --</option>
+            <option value="Seed Company">Seed Company</option>
+            <option value="Farmer">Farmer</option>
+            <option value="Crop Processor">Crop Processor</option>
+            <option value="Retailer">Retailer</option>
+            <option value="Consumer">Consumer</option>
+          </select>
+        </label>
+
+        <button class="primary" type="submit">Log in</button>
+      </form>
+
+      <p class="muted">
+        Don’t have an account?
+        <a href="signup.html">Create one</a>
+      </p>
+    </section>
+  </main>
+
+  <script src="login.js"></script>
+</body>
+</html>

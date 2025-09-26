@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stakeholder Verification • Agrichain</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="login.css" />
+</head>
+<body>
+  <!-- Background video -->
+  <video autoplay muted loop id="bg-video">
+    <source src="bgverify.mp4" type="video/mp4">
+    Your browser does not support HTML5 video.
+  </video>
+
+  <main class="auth-wrapper">
+    <section class="card">
+      <h1 class="title">Stakeholder Verification</h1>
+
+      <form id="verifyForm" onsubmit="verify(event)" novalidate>
+        <label class="field">
+          <span>Name</span>
+          <input type="text" id="name" placeholder="Enter your name" required />
+        </label>
+
+        <label class="field">
+          <span>Hash ID</span>
+          <input type="text" id="hashId" placeholder="Enter your Hash ID" required />
+        </label>
+
+        <label class="field">
+          <span>Role</span>
+          <select id="role" required>
+            <option value="" disabled selected>-- Select Role --</option>
+            <option value="Seed Company">Seed Company</option>
+            <option value="Farmer">Farmer</option>
+            <option value="Crop Processor">Crop Processor</option>
+            <option value="Retailer">Retailer</option>
+            <option value="Consumer">Consumer</option>
+          </select>
+        </label>
+
+        <button class="primary" type="submit">Verify</button>
+      </form>
+
+      <p class="muted">
+        Not the right page? <a href="login.html">Go back to login</a>
+      </p>
+    </section>
+  </main>
+
+  <script>
+  // Auto-select role from query string
+  window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const role = urlParams.get('role');
+    if (role) {
+      document.getElementById('role').value = role;
+    }
+  };
+
+  function verify(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const hashId = document.getElementById('hashId').value.trim();
+    const role = document.getElementById('role').value;
+
+    if (!name || !hashId || !role) {
+      alert('⚠️ Please fill all fields');
+      return;
+    }
+
+    alert(`✅ Verified! Welcome ${name} (${role})`);
+
+    // Store details in localStorage
+    localStorage.setItem('stakeholderName', name);
+    localStorage.setItem('stakeholderHash', hashId);
+    localStorage.setItem('stakeholderRole', role);
+
+    // Redirect to the correct page based on role
+    redirectToDashboard(role);
+  }
+
+  function redirectToDashboard(role) {
+    const map = {
+      "Seed Company": "dashboard.html",
+      "Farmer": "dashboard.html",
+      "Crop Processor": "dashboard.html",
+      "Retailer": "dashboard.html",
+      "Consumer": "dashboard.html",
+    };
+    window.location.href = map[role] || "index.html";
+  }
+  </script>
+</body>
+</html>

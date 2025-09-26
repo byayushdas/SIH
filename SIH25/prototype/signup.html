@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="signup.css"/>
+</head>
+<body>
+  <video autoplay muted loop id="bg-video">
+    <source src="bg2.mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+  <div class="auth-wrapper">
+    <h2 class="title">Create Account</h2>
+    <form id="signupForm">
+      
+      <div class="field">
+        <span>Full Name</span>
+        <input type="text" id="name" placeholder="Enter your full name" required>
+      </div>
+
+      <div class="field">
+        <span>Email</span>
+        <input type="email" id="email" placeholder="Enter your email" required>
+      </div>
+
+      <div class="field">
+        <span>Role</span>
+        <select id="role" required>
+          <option value="">Select Role</option>
+          <option value="agency">Agency</option>
+          <option value="agriculturalist">Agriculturalist</option>
+          <option value="wholesaler">Wholesaler</option>
+          <option value="merchant">Merchant</option>
+          <option value="consumer">Consumer</option>
+        </select>
+      </div>
+
+      <div class="field pw">
+        <span>Password</span>
+        <input type="password" id="password" placeholder="Enter password" required>
+        <button type="button" id="pwToggle" class="pw-toggle">👁</button>
+      </div>
+
+      <div class="field pw">
+        <span>Confirm Password</span>
+        <input type="password" id="confirmPassword" placeholder="Confirm password" required>
+      </div>
+
+      <button type="submit" class="primary">Sign Up</button>
+
+      <p class="muted">Already have an account? <a href="login.html">Log in</a></p>
+    </form>
+  </div>
+
+  <script src="signup.js"></script>
+</body>
+</html>
